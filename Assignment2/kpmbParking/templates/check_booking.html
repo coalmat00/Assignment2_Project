@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Check Booking</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        padding-bottom: 20px;
+      }
+      img {
+        display: block;
+        margin: 20px auto;
+        width: 200px;
+        height: 200px;
+      }
+      header {
+        background-color: #004c8c;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+      }
+
+      img {
+        display: block;
+        margin: 20px auto;
+        width: 200px;
+        height: 200px;
+      }
+
+      h1 {
+        margin-top: 40px;
+        text-align: center;
+      }
+      table {
+        border-collapse: collapse;
+        margin: 40px auto;
+        width: 60%;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+      }
+
+      th {
+        background-color: #4caf50;
+        color: #fff;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      td {
+        font-size: 16px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+
+      tr:hover {
+        background-color: #d3d3d3;
+      }
+
+      a {
+        text-decoration: none;
+        color: #007bff;
+        display: block;
+        margin: 5pxpx auto 30px auto;
+        text-align: center;
+      }
+      input[type="text"] {
+        padding: 10px;
+        font-size: 12px;
+        border-radius: 13px;
+        border: 1px solid #ccc;
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        width: 200px;
+        margin-right: 10px;
+        display: block;
+        margin: 20px auto;
+      }
+      
+      button[type="submit"] {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #007bff;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+        display: block;
+        margin: 5px auto;
+      }
+      button[type="button"] {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #007bff;
+        background-color: #007bff;
+        color: #fff;
+        cursor: pointer;
+        display: block;
+        margin: 5px auto;
+      }
+
+      .update{
+        display: inline-block;
+        margin: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        text-decoration: none;
+        color: #007bff;
+      }
+
+      .delete {
+        display: inline-block;
+        margin: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        text-decoration: none;
+        color: #dc3545;
+      }
+      
+      .cancel {
+        display: inline-block;
+        margin: 5px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        text-decoration: none;
+        color: black;
+      }
+
+      .booking_cancel {
+        text-align: center;
+        color: #dc3545;
+      }
+      
+    </style>
+  </head>
+  <body>
+    {% load static %}
+    <img
+      src="{% static "media/kpmb.png" %}"
+      alt="kpmb logo"
+    />
+    <h1>Check Booking</h1>
+    {% if booking_cancel %}
+    <p class = "booking_cancel">{{booking_cancel}}</p>
+    {% endif %}
+    <form action="" method="get">
+      <input type="text" name = "student_id" placeholder="Search by student ID">
+      <button type="submit">Search</button>
+      <button type="button" onclick="window.location.href='{{ request.path }}'">Reset</button>
+    </form>
+    <table>
+      <tr>
+        <th>Booking ID</th>
+        <th>Student ID</th>
+        <th>Parking ID</th>
+        <th>Booking Date</th>
+        <th>Booking Time</th>
+        <th>Remark</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Action</th>
+        <th>Review</th>
+      </tr>
+      {% for booking in allbooking %}
+      <tr>
+        <td>{{booking.bookingID}}</td>
+        <td>{{booking.studentID.studentID}}</td>
+        <td>{{booking.parkingID.parkingID}}</td>
+        <td>{{booking.bookingDate}}</td>
+        <td>{{booking.bookingTime}}</td>
+        <td>{{booking.remark}}</td>
+        <td>{{booking.startDate}}</td>
+        <td>{{booking.endDate}}</td>
+        <td>
+          {% if booking.studentID.studentID == studentID %}
+            <a href="{% url 'update_review' booking.bookingID %}" class="update">Update review</a>
+            <a href="{% url 'delete_review' booking.bookingID %}" class="delete">Delete review</a>
+            <a href="{% url 'cancel_booking' booking.bookingID %}" class = "cancel">Cancel Booking</a>
+          {% else %} 
+          - 
+          {% endif %}
+        </td>
+        <td>
+          {% for rev in allreview %}
+            {% if booking.bookingID == rev.bookingID.bookingID %}
+              {{rev.reviewDescription}}
+              <br>
+            {% endif %}
+          {% endfor %}
+        </td>
+
+      </tr>
+      {% endfor %}
+    </table>
+    <a href="{% url 'main_menu' %}">Go back</a>
+
+  </body>
+</html>

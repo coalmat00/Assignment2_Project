@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Zeyada&display=swap"
+      rel="stylesheet"
+    />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>KPMB Students Parking System</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        padding: 0;
+      }
+      h1,
+      h2,
+      h3 {
+        text-align: center;
+        color: #555;
+        margin-top: 20px;
+      }
+
+      #greetings {
+        font-family: "Zeyada", cursive;
+        font-weight: 700;
+        min-height: 1.8em; /* set a minimum height for the h1 element */
+      }
+      h2 {
+        display: block;
+        font-size: 1.5rem;
+        width: 50%;
+        margin: 20px auto;
+        font-weight: 300;
+      }
+
+      img {
+        display: block;
+        margin: 20px auto;
+        width: 200px;
+        height: 200px;
+      }
+
+      form {
+        margin: auto;
+        width: 400px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        color: #666;
+      }
+
+      input[type="text"],
+      select {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      input[type="password"],
+      select {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      input[type="submit"] {
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        padding: 12px 20px;
+        margin-top: 10px;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #45a049;
+      }
+
+      select option {
+        background-color: #fff;
+        color: #000;
+      }
+
+      p {
+        color: red;
+        text-align: center;
+        margin-top: 10px;
+      }
+      .link_bawah {
+        display: block;
+        margin: 20px auto;
+        text-align: center;
+        text-decoration: underline;
+        color: #007bff;
+      }
+
+      .error {
+        color: red;
+      }
+      .success {
+        color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    {% load static %}
+    <img
+      src="{% static "media/kpmb.png" %}"
+      alt="kpmb logo"
+    />
+    <h1>Welcome to KPMB Students Parking Booking System</h1>
+    <h2>You may register below.</h2>
+    {% if message %}
+    <p class="message {{message_type}}">{{ message }}</p>
+    {% endif %}
+
+    <!-- For student registration -->
+    <h3>Register</h3>
+    <form action="{% url 'register' %}" method="post">
+      {% csrf_token %}
+      <label for="r_id">Student ID:</label>
+      <input type="text" name="r_id" />
+      <label for="r_password">Password:</label>
+      <input type="password" name="r_password" />
+      <label for="r_name">Your name:</label>
+      <input type="text" name="r_name" />
+
+      <!-- dropdown for course -->
+      <select name="r_course">
+        <option value="Course: Null">Select Course</option>
+        {% for data in allcourse %}
+        <option value="{{data.courseID}}">{{data.courseID}}</option>
+        {% endfor %}
+      </select>
+
+      <!-- dropdown for student class -->
+      <select name="r_class">
+        <option value="Class: Null">Select Class</option>
+        {% for data in allclass %}
+        <option value="{{data.classID}}">{{data.classID}}</option>
+        {% endfor %}
+      </select>
+      <input type="submit" value="Register" />
+    </form>
+
+    <a href="{% url 'index' %}" class="link_bawah">Go back</a>
+  </body>
+</html>

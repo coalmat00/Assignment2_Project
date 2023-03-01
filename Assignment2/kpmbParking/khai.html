@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  margin:0;
+  font-family: sans-serif;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+li {
+  float: right;
+}
+
+li a {
+  display: block;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #04AA6D;
+}
+table,tr,td{
+    border: 2px solid #000;
+    border-collapse: collapse;
+    
+}
+</style>
+</head>
+<body>
+
+  <ul>
+    <li><a href="{% url 'home_page' %}">Home</a></li>
+    <li><a class="active" href="{% url 'assignment_page' %}">Assignment</a></li>
+    <li><a href="{% url 'subject_page' %}">Subject</a></li>
+    <li><a href="{% url 'question_page' %}">Question</a></li>
+  </ul>
+
+<div style="padding:20px;margin-top:30px;background-color:#ffffff;height:1500px;">
+  <h1>KEY IN YOUR ASSIGNMENT</h1>
+ <form action="add_assignment" method="post">
+    {% csrf_token %}
+    Student id:
+    <select name="s_student">
+        <option value="">Select one</option>
+        {% for value in allstudent%} 
+        <option value="{{value.studentID}}">{{value.studentID}}</option>
+        {% endfor %}
+    </select><br>
+    Subject:
+    <select name="s_subject">
+        <option value="">Select one</option>
+        {% for value in allsubject%} 
+        <option value="{{value.subjectID}}">{{value.subjectID}}</option>
+        {% endfor %}
+    </select><br>
+
+    Assigment: <input type="text" name="Assignment"><br>
+
+    Description: <input type="text" name="Description"><br>
+
+    Date-in: <input type="date" name="Date-in"><br>
+
+    Date-out: <input type="date" name="Date-out"><br>
+
+    status : <input type="text" name="Status"><br><br>
+
+    <input type="submit" value="Add Assigment">
+</form><br><br>
+<a href="{% url 'assignment_page' %}"><input type="submit" value="Assigment Page"></a><br>
+
+
+{{message}}
+</div>
+
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parking Booking</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        color: #333;
+      }
+      img {
+        display: block;
+        margin: 20px auto;
+        width: 200px;
+        height: 200px;
+      }
+      h1 {
+        text-align: center;
+        font-size: 3em;
+        margin-top: 1em;
+      }
+
+      form {
+        max-width: 500px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 2em;
+        border-radius: 0.5em;
+        box-shadow: 0px 0px 10px #999;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5em;
+        font-weight: bold;
+      }
+
+      input[type="date"],
+      select,
+      input[type="text"] {
+        display: block;
+        width: 100%;
+        padding: 0.5em;
+        margin-bottom: 1em;
+        border: 1px solid #ccc;
+        border-radius: 0.25em;
+        font-size: 1em;
+      }
+
+      select {
+        background-color: #f2f2f2;
+      }
+
+      input[type="submit"] {
+        background-color: #4caf50;
+        color: #fff;
+        border: none;
+        border-radius: 0.25em;
+        padding: 0.5em 1em;
+        font-size: 1.2em;
+        cursor: pointer;
+      }
+
+      input[type="submit"]:hover {
+        background-color: #3e8e41;
+      }
+
+      .link_bawah {
+        display: block;
+        margin: 20px auto;
+        text-align: center;
+        text-decoration: underline;
+        color: #007bff;
+      }
+
+      .message {
+        display: block;
+        margin: 20px auto;
+        text-align: center;
+      }
+      .success {
+        color: #45a049;
+      }
+      .error {
+        color: red;
+      }
+
+      /*for disabled date*/
+      .booked-date {
+        background-color: #ffcccc;
+      }
+    </style>
+  </head>
+  <body>
+    {% load static %} <img src="{% static "media/kpmb.png" %}" alt="kpmb logo"
+    />
+    <h1>Parking Booking</h1>
+
+    {% if message %}
+    <p class=" message {{message_type}}">{{ message }}</p>
+    {% if overlapping_dates %}
+    <p class="message {{message_type}}">
+      For parking {{parkingID}}, these dates are already booked:
+      {{overlapping_dates}}
+    </p>
+    <p class="message {{message_type}}">
+      Please select different parking or different start and end dates.
+    </p>
+    {% endif %} {% endif %}
+
+    <form action="{% url 'book_parking' %}" method="post">
+      {% csrf_token %}
+      <select name="parking_slot" required>
+        <option value="parking:Null">Select the available parking:</option>
+        {% for parking in allparking %}
+        <option value="{{parking.parkingID}}">
+          {{parking.parkingID}} (Location: {{parking.location}})
+        </option>
+        {% endfor %}
+      </select>
+
+      <label for="startDate">Select booking start date:</label>
+      <input type="date" name="startDate" required />
+      <label for="endDate">Select booking end date:</label>
+      <input type="date" name="endDate" required />
+
+      <label for="remark">Remark:</label>
+      <input type="text" name="remark" placeholder="(Optional)" />
+      <input type="submit" value="Book parking" />
+    </form>
+
+    <!-- <p class="message {{message_type}}">{{message}}</p> -->
+    <a href="{% url 'main_menu' %}" class="link_bawah">Go to main menu</a>
+  </body>
+</html>
